@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ХРЕНЬ - Интернет-магазин всякой хрени</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+        }
+        
+        body {
+            background-color: #ffebee;
+            color: #5d4037;
+            line-height: 1.6;
+            background-image: radial-gradient(#ffcdd2 2px, transparent 2px);
+            background-size: 20px 20px;
+        }
+        
+        /* Хедер */
+        header {
+            background: linear-gradient(90deg, #ff7043 0%, #ffab40 100%);
+            color: white;
+            padding: 15px 0;
+            box-shadow: 0 2px 10px rgba(255, 107, 0, 0.3);
+            border-bottom: 5px dotted #ff5722;
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 32px;
+            font-weight: 900;
+            text-decoration: none;
+            color: white;
+            text-shadow: 3px 3px 0 #ff5722;
+            transform: rotate(-2deg);
+        }
+        
+        .logo i {
+            margin-right: 15px;
+            font-size: 40px;
+            animation: spin 10s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .search-bar {
+            flex-grow: 1;
+            max-width: 600px;
+            margin: 0 30px;
+            position: relative;
+        }
+        
+        .search-bar input {
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 30px;
+            border: 3px dashed #ff9800;
+            font-size: 16px;
+            padding-left: 45px;
+            background-color: #fff8e1;
+        }
+        
+        .search-bar i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ff9800;
+        }
+        
+        .user-actions a {
+            color: white;
+            margin-left: 20px;
+            font-size: 24px;
+            text-decoration: none;
+            transition: transform 0.3s;
+        }
+        
+        .user-actions a:hover {
+            transform: scale(1.3) rotate(10deg);
+        }
+        
+        /* Основной контент */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .page-title {
+            margin-bottom: 30px;
+            color: #ff5722;
+            font-size: 36px;
+            padding-bottom: 10px;
+            border-bottom: 3px wavy #ffccbc;
+            text-align: center;
+            text-shadow: 2px 2px 0 #ffcc80;
+        }
+        
+        /* Товары */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
+        }
+        
+        .product-card {
+            background: linear-gradient(145deg, #fff3e0, #ffe0b2);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(255, 87, 34, 0.2);
+            transition: all 0.4s;
+            border: 3px solid #ffb74d;
+            position: relative;
+        }
+        
+        .product-card:hover {
+            transform: translateY(-10px) rotate(1deg);
+            box-shadow: 0 15px 30px rgba(255, 87, 34, 0.4);
+            border-color: #ff9800;
+        }
+        
+        .product-card::before {
+            content: "ХРЕНЬ!";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ff5722;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+            z-index: 2;
+        }
+        
+        .product-image {
+            height: 200px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(45deg, #ffecb3, #ffcc80);
+        }
+        
+        .product-image img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            transition: transform 0.5s;
+        }
+        
+        .product-card:hover .product-image img {
+            transform: scale(1.1);
+        }
+        
+        .product-info {
+            padding: 20px;
+        }
+        
+        .product-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            height: 45px;
+            overflow: hidden;
+            color: #5d4037;
+        }
+        
+        .product-price {
+            color: #e53935;
+            font-size: 24px;
+            font-weight: 900;
+            margin-bottom: 15px;
+            text-shadow: 1px 1px 0 #ffccbc;
+        }
+        
+        .product-rating {
+            color: #ff9800;
+            margin-bottom: 15px;
+        }
+        
+        .add-to-cart {
+            background: linear-gradient(to right, #ff9800, #ff5722);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        
+        .add-to-cart:hover {
+            background: linear-gradient(to right, #ff5722, #ff9800);
+            transform: scale(1.05);
+        }
+        
+        .add-to-cart i {
+            margin-right: 8px;
+            animation: bounce 1s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+        
+        /* Кнопка перехода */
+        .promo-section {
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(135deg, #ff9800 0%, #ff5722 100%);
+            border-radius: 25px;
+            margin: 40px 0;
+            color: white;
+            border: 5px dotted white;
+            box-shadow: 0 10px 30px rgba(255, 87, 34, 0.5);
+        }
+        
+        .promo-title {
+            font-size: 42px;
+            margin-bottom: 20px;
+            text-shadow: 3px 3px 0 #ffcc80;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .promo-text {
+            font-size: 22px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            font-weight: bold;
+        }
+        
+        .promo-button {
+            display: inline-block;
+            background-color: #4caf50;
+            color: white;
+            padding: 20px 50px;
+            border-radius: 50px;
+            font-size: 28px;
+            font-weight: 900;
+            text-decoration: none;
+            transition: all 0.3s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            text-transform: uppercase;
+            border: 4px solid white;
+            animation: shake 0.5s infinite;
+        }
+        
+        @keyframes shake {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(2deg); }
+            50% { transform: rotate(0deg); }
+            75% { transform: rotate(-2deg); }
+            100% { transform: rotate(0deg); }
+        }
+        
+        .promo-button:hover {
+            background-color: #2e7d32;
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+            animation: none;
+        }
+        
+        /* Футер */
+        footer {
+            background: linear-gradient(to bottom, #5d4037, #3e2723);
+            color: #ffccbc;
+            padding: 40px 0 20px;
+            margin-top: 50px;
+            border-top: 5px solid #ff9800;
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .footer-column h3 {
+            color: #ffab40;
+            margin-bottom: 20px;
+            font-size: 22px;
+            text-shadow: 1px 1px 0 #5d4037;
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-column ul li a {
+            color: #ffccbc;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: block;
+            padding: 5px 0;
+        }
+        
+        .footer-column ul li a:hover {
+            color: #ffab40;
+            transform: translateX(10px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 2px dashed #ffab40;
+            color: #ffccbc;
+            font-size: 16px;
+        }
+        
+        /* Адаптивность */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            .logo {
+                margin-bottom: 15px;
+                font-size: 28px;
+            }
+            
+            .search-bar {
+                margin: 15px 0;
+                max-width: 100%;
+            }
+            
+            .user-actions {
+                margin-top: 10px;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 15px;
+            }
+            
+            .promo-title {
+                font-size: 32px;
+            }
+            
+            .promo-button {
+                padding: 18px 35px;
+                font-size: 24px;
+            }
+        }
+        
+        /* Уведомление о добавлении в корзину */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            color: white;
+            padding: 20px 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            z-index: 1000;
+            display: none;
+            animation: slideIn 0.5s ease-out;
+            border: 3px solid white;
+            font-weight: bold;
+            transform: rotate(1deg);
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%) rotate(10deg);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0) rotate(1deg);
+                opacity: 1;
+            }
+        }
+        
+        /* Бейджи для скидок */
+        .discount-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #e53935;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 2;
+            transform: rotate(-10deg);
+            box-shadow: 3px 3px 0 rgba(0,0,0,0.2);
+        }
+        
+        /* Пузыри для фона */
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 152, 0, 0.1);
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Хедер -->
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo">
+                <i class="fas fa-gift"></i>
+                ХРЕНЬ
+            </a>
+            
+            <div class="search-bar">
+                <i class="fas fa-search"></i>
+                <input type="text" placeholder="Ищи свою хрень...">
+            </div>
+            
+            <div class="user-actions">
+                <a href="#" title="Любимая хрень"><i class="far fa-heart"></i></a>
+                <a href="#" title="Корзина с хренью"><i class="fas fa-shopping-cart"></i></a>
+                <a href="#" title="Моя хрень"><i class="far fa-user"></i></a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <main class="container">
+        <h1 class="page-title">🔥 ГОРЯЧАЯ ХРЕНЬ 🔥</h1>
+        
+        <!-- Сетка товаров -->
+        <div class="products-grid">
+            <!-- Товар 1 -->
+            <div class="product-card">
+                <div class="discount-badge">-30%</div>
+                <div class="product-image">
+                    <img src="https://via.placeholder.com/250x200/ff5722/ffffff?text=Бесполезная+хрень" alt="Хрень 1">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Набор "Абсолютно бесполезная хрень"</h3>
+                    <div class="product-price">1 999 ₽</div>
+                    <div class="product-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span style="color: #777; margin-left: 5px;">4.7</span>
+                    </div>
+                    <button class="add-to-cart" data-product="Набор бесполезной хрени">
+                        <i class="fas fa-cart-plus"></i> ХОЧУ ХРЕНЬ!
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Товар 2 -->
+            <div class="product-card">
+                <div class="discount-badge">ХИТ!</div>
+                <div class="product-image">
+                    <img src="https://via.placeholder.com/250x200/ff9800/ffffff?text=Ненужная+хрень" alt="Хрень 2">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Супер-пупер ненужная хрень</h3>
+                    <div class="product-price">3 499 ₽</div>
+                    <div class="product-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                        <span style="color: #777; margin-left: 5px;">4.0</span>
+                    </div>
+                    <button class="add-to-cart" data-product="Супер-пупер ненужная хрень">
+                        <i class="fas fa-cart-plus"></i> ХОЧУ ХРЕНЬ!
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Товар 3 -->
+            <div class="product-card">
+                <div class="discount-badge">NEW</div>
+                <div class="product-image">
+                    <img src="https://via.placeholder.com/250x200/4caf50/ffffff?text=Дикая+хрень" alt="Хрень 3">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Дикая хрень для смелых</h3>
+                    <div class="product-price">5 999 ₽</div>
+                    <div class="product-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <span style="color: #777; margin-left: 5px;">5.0</span>
+                    </div>
+                    <button class="add-to-cart" data-product="Дикая хрень для смелых">
+                        <i class="fas fa-cart-plus"></i> ХОЧУ ХРЕНЬ!
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Товар 4 -->
+            <div class="product-card">
+                <div class="discount-badge">-50%</div>
+                <div class="product-image">
+                    <img src="https://via.placeholder.com/250x200/9c27b0/ffffff?text=Странная+хрень" alt="Хрень 4">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Странная хрень неизвестного назначения</h3>
+                    <div class="product-price">2 299 ₽</div>
+                    <div class="product-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <i class="far fa-star"></i>
+                        <span style="color: #777; margin-left: 5px;">3.5</span>
+                    </div>
+                    <button class="add-to-cart" data-product="Странная хрень">
+                        <i class="fas fa-cart-plus"></i> ХОЧУ ХРЕНЬ!
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Товар 5 -->
+            <div class="product-card">
+                <div class="discount-badge">ТОП</div>
+                <div class="product-image">
+                    <img src="https://via.placeholder.com/250x200/2196f3/ffffff?text=Крутая+хрень" alt="Хрень 5">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">Мегакрутая хрень премиум класса</h3>
+                    <div class="product-price">9 999 ₽</div>
+                    <div class="product-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                        <span style="color: #777; margin-left: 5px;">4.6</span>
+                    </div>
+                    <button class="add-to-cart" data-product="Мегакрутая хрень">
+                        <i class="fas fa-cart-plus"></i> ХОЧУ ХРЕНЬ!
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Промо-секция с кнопкой -->
+        <div class="promo-section">
+            <h2 class="promo-title">🎉 САМАЯ ЛУЧШАЯ ХРЕНЬ! 🎉</h2>
+            <p class="promo-text">Только здесь вы найдете ту самую хрень, о которой всегда мечтали!</p>
+            <p class="promo-text">Не упустите шанс получить свою порцию счастья!</p>
+            <a href="https://savelij891.github.io/noviy_god/" class="promo-button" target="_blank">
+                НАЖМИ ДЛЯ ХРЕНИ
+            </a>
+        </div>
+    </main>
+
+    <!-- Футер -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>ХРЕНЬ SHOP</h3>
+                <ul>
+                    <li><a href="#">О нашей хрени</a></li>
+                    <li><a href="#">Как мы делаем хрень</a></li>
+                    <li><a href="#">Хрень для бизнеса</a></li>
+                    <li><a href="#">Стань продавцом хрени</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Помощь с хренью</h3>
+                <ul>
+                    <li><a href="#">Как выбрать хрень</a></li>
+                    <li><a href="#">Доставка хрени</a></li>
+                    <li><a href="#">Возврат хрени</a></li>
+                    <li><a href="#">Гарантия на хрень</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Хрень-сервисы</h3>
+                <ul>
+                    <li><a href="#">Хрень-бонусы</a></li>
+                    <li><a href="#">Хрень Premium</a></li>
+                    <li><a href="#">Хрень-рассрочка</a></li>
+                    <li><a href="#">Хрень в подарок</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-column">
+                <h3>Хрень в соцсетях</h3>
+                <ul>
+                    <li><a href="#"><i class="fab fa-vk"></i> ХреньВК</a></li>
+                    <li><a href="#"><i class="fab fa-telegram"></i> ХреньТелега</a></li>
+                    <li><a href="#"><i class="fab fa-youtube"></i> ХреньТьюб</a></li>
+                    <li><a href="#"><i class="fab fa-tiktok"></i> ХреньТикТок</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            &copy; 2023 МАГАЗИН ХРЕНИ. Вся хрень защищена. Хрень не является оскорблением.
+        </div>
+    </footer>
+
+    <!-- Уведомление -->
+    <div class="notification" id="notification">
+        Хрень добавлена в корзину! Ура!
+    </div>
+
+    <script>
+        // Создаем плавающие пузыри
+        function createBubbles() {
+            const colors = ['#ff7043', '#ffab40', '#ff9800', '#ff5722'];
+            for (let i = 0; i < 15; i++) {
+                const bubble = document.createElement('div');
+                bubble.classList.add('bubble');
+                const size = Math.random() * 100 + 50;
+                const x = Math.random() * 100;
+                const y = Math.random() * 100;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                bubble.style.width = `${size}px`;
+                bubble.style.height = `${size}px`;
+                bubble.style.left = `${x}vw`;
+                bubble.style.top = `${y}vh`;
+                bubble.style.background = `radial-gradient(circle, ${color}40, transparent)`;
+                bubble.style.opacity = Math.random() * 0.3 + 0.1;
+                
+                document.body.appendChild(bubble);
+            }
+        }
+        
+        // Функция для показа уведомления
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message || 'Хрень добавлена в корзину! Ура!';
+            notification.style.display = 'block';
+            
+            // Скрываем уведомление через 3 секунды
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+        
+        // Обработчики для кнопок "ХОЧУ ХРЕНЬ!"
+        document.addEventListener('DOMContentLoaded', function() {
+            createBubbles();
+            
+            const addToCartButtons = document.querySelectorAll('.add-to-cart');
+            
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const productName = this.getAttribute('data-product');
+                    
+                    // Меняем текст кнопки на короткое время
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check"></i> ХРЕНЬ ТВОЯ!';
+                    this.style.background = 'linear-gradient(to right, #4caf50, #2e7d32)';
+                    
+                    // Добавляем праздничный эффект
+                    this.style.transform = 'scale(1.1) rotate(5deg)';
+                    
+                    // Показываем уведомление со случайным сообщением
+                    const messages = [
+                        `"${productName}" теперь твоя!`,
+                        "Отличный выбор хрени!",
+                        "Хрень в пути к тебе!",
+                        "Ты стал счастливее на 1 хрень!",
+                        "Еще одна хрень в твоей жизни!"
+                    ];
+                    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+                    showNotification(randomMessage);
+                    
+                    // Воспроизводим звук (если бы был)
+                    if (typeof Audio !== 'undefined') {
+                        const audio = new Audio('data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEAQB8AAEAfAAABAAgAZGF0YQ');
+                        // Это заглушка для реального звука
+                    }
+                    
+                    // Возвращаем исходный вид кнопки через 2 секунды
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                        this.style.background = '';
+                        this.style.transform = '';
+                    }, 2000);
+                });
+            });
+            
+            // Обработчик для поля поиска
+            const searchInput = document.querySelector('.search-bar input');
+            searchInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const query = this.value.trim();
+                    if (query) {
+                        alert(`Ищем хрень по запросу: "${query}"`);
+                        this.value = '';
+                        this.style.borderColor = '#4caf50';
+                        setTimeout(() => {
+                            this.style.borderColor = '#ff9800';
+                        }, 1000);
+                    }
+                }
+            });
+            
+            // Имитация работы иконок в хедере
+            const headerIcons = document.querySelectorAll('.user-actions a');
+            headerIcons.forEach(icon => {
+                icon.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const title = this.getAttribute('title');
+                    const messages = {
+                        'Любимая хрень': 'Ваша любимая хрень ждет вас!',
+                        'Корзина с хренью': 'В корзине пока пусто, но это ненадолго!',
+                        'Моя хрень': 'Личный кабинет хрени'
+                    };
+                    alert(messages[title] || `Раздел: "${title}"`);
+                });
+            });
+            
+            // Добавляем анимацию при прокрутке
+            window.addEventListener('scroll', function() {
+                const cards = document.querySelectorAll('.product-card');
+                cards.forEach(card => {
+                    const rect = card.getBoundingClientRect();
+                    if (rect.top < window.innerHeight * 0.8) {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }
+                });
+            });
+            
+            // Инициируем анимацию карточек
+            setTimeout(() => {
+                const cards = document.querySelectorAll('.product-card');
+                cards.forEach((card, index) => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(50px)';
+                    setTimeout(() => {
+                        card.style.transition = 'opacity 0.5s, transform 0.5s';
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, index * 100);
+                });
+            }, 500);
+        });
+        
+        // Счетчик хрени в корзине
+        let хреньCount = 0;
+        
+        // Функция для обновления счетчика корзины
+        function updateХреньCount() {
+            хреньCount++;
+            // В реальном приложении здесь было бы обновление иконки корзины
+            console.log(`Хрени в корзине: ${хреньCount}`);
+            
+            // Обновляем title у иконки корзины
+            const cartIcon = document.querySelector('.user-actions a[title*="корзин"]');
+            if (cartIcon) {
+                cartIcon.setAttribute('title', `Корзина с хренью (${хреньCount})`);
+            }
+        }
+    </script>
+</body>
+</html>
